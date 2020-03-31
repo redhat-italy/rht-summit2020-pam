@@ -11,63 +11,80 @@ This is an image showing the BPMN process:
 
 ### Prerequisites
 
+You need an OpenShift cluster version 3.11 or 4.x to run the application.
+You can also use minishift or oc cluster.
+
+You need the OpenShift CLI (oc command) on your machine.
+
 ### Overview
 
 The bank-loan-service is a spring boot application running the PAM capabilities.
 
 It deploys, when started, the bank-loan-kjar, using the LocalContainerStartupStrategy.
 
-PAM capabilities are defined in application-openshift.properties files: 
+PAM capabilities are defined in *application-openshift.properties* file:
 
-kieserver.drools.enabled=true<br>
-kieserver.jbpm.enabled=true<br>
-kieserver.dmn.enabled=false<br>
-kieserver.jbpmui.enabled=true<br>
-kieserver.casemgmt.enabled=false<br>
+```bash
+kieserver.drools.enabled=true
+kieserver.jbpm.enabled=true
+kieserver.dmn.enabled=false
+kieserver.jbpmui.enabled=true
+kieserver.casemgmt.enabled=false
+```
 
 PAM job executor (executes the async tasks) has been defined using these properties:
 
-jbpm.executor.enabled=true<br>
-jbpm.executor.retries=5<br>
-jbpm.executor.interval=10<br>
-jbpm.executor.threadPoolSize=1<br>
-jbpm.executor.timeUnit=SECONDS<br>
+```bash
+jbpm.executor.enabled=true
+jbpm.executor.retries=5
+jbpm.executor.interval=10
+jbpm.executor.threadPoolSize=1
+jbpm.executor.timeUnit=SECONDS
+```
 
-PAM DBMS connection details and JPA features have been defined with the properties starting with the prefix:<br>
-spring.datasource*<br>
+PAM DBMS connection details and JPA features have been defined with the properties starting with the prefix:
+
+```bash
+spring.datasource*
 spring.jpa*
+```
 
-Deployment of kjars are not controlled by an external process-controller (for example a business central) but the kie-server uses an xml file (kie-server-state-file) with the list of kjar containers to deploy at startup.
+*Deployment of kjars* are not controlled by an external process-controller (for example a business central) but the kie-server uses an xml file (kie-server-state-file) with the list of kjar containers to deploy at startup.
 The containers (kjars) must exist into the local maven repository in order to be deployed (they are not downloaded from nexus).
 The maven dependencies (required by the kie-server and kjars) will be loaded using the telkom nexus repositories (as defined in maven settings.xml file).
 
-Ther kie-server-state file defines also the properties to connect the kie-server to an external process controller (for monitoring):
+The *kie-server-state* file defines also the properties to connect the kie-server to an external process controller (for monitoring):
 
-org.kie.server.controller<br>
-org.kie.server.controller.user<br>
+```bash
+org.kie.server.controller
+org.kie.server.controller.user
 org.kie.server.controller.pwd
+```
 
-
-The kie server security has been defined in a Spring WebSecurityConfigurerAdapter.
+The kie server security has been defined in a Spring *WebSecurityConfigurerAdapter*.
 The /rest** context (pam rest APIs are accessible from this context) is under authentication.
 
 User and kie server specific roles (rest-all,kie-server) are hard coded inside the class (inMemoryAuthentication)
 
-A custom Dockerfile has been provided based on openjdk18-openshift image (latest).
+A custom *Dockerfile* has been provided based on *openjdk18-openshift* image (latest).
 
-A custom maven repository is created inside the image containing the bank-loan-kjar.
+A custom *maven repository* is created inside the image containing the bank-loan-kjar.
 When the kie server starts up, it needs that kjar exists in the local maven repository (it will not be loaded from nexus).
 
 ### Deploy the kie server
 
+Deployment on OpenShift has been perfomed using the maven fabric8 plugin; openshift resources are into folder: *src/main/fabric8*:
+
+Image Build:
+
 ```bash
-   mvn -s ${NEXUS_MAVEN_SETTINGS} fabric8:build -Dfabric8.namespace=${build_environment}
+mvn fabric8:build -Dfabric8.namespace=${build_environment}
 ```
 
 Generate & Apply DeploymentConfig:
 
 ```bash
-mvn -s ${NEXUS_MAVEN_SETTINGS} fabric8:resource fabric8:resource-apply -Dfabric8.openshift.enableAutomaticTrigger=false -Dfabric8.openshift.imageChangeTrigger=false -Dfabric8.namespace=${deploy_environment} -Dfabric8.generator.name=docker-registry.default.svc:5000/${build_environment}/${service_name}:1.0.0
+mvn fabric8:resource fabric8:resource-apply -Dfabric8.openshift.enableAutomaticTrigger=false -Dfabric8.openshift.imageChangeTrigger=false -Dfabric8.namespace=${deploy_environment} -Dfabric8.generator.name=docker-registry.default.svc:5000/${build_environment}/${service_name}:1.0.0
 ```
 
 Deploy to OpenShift:
@@ -75,7 +92,6 @@ Deploy to OpenShift:
 ```bash
 oc rollout latest dc/${deploy_config} -n ${deploy_environment}
 ```
-
 
 ## Local Environment installation
 
