@@ -3,28 +3,13 @@
   <configuration>
     <configItems>
       <config-item>
-        <name>org.kie.server.controller.user</name>
-        <value>executionUser</value>
-        <type>java.lang.String</type>
-      </config-item>
-      <config-item>
-        <name>org.kie.server.controller.pwd</name>
-        <value>executionUser</value>
-        <type>java.lang.String</type>
-      </config-item>
-      <config-item>
-        <name>org.kie.server.user</name>
-        <value>executionUser</value>
-        <type>java.lang.String</type>
-      </config-item>
-      <config-item>
-        <name>org.kie.server.pwd</name>
-        <value>executionUser</value>
+        <name>org.kie.server.startup.strategy</name>
+        <value>LocalContainersStartupStrategy</value>
         <type>java.lang.String</type>
       </config-item>
       <config-item>
         <name>org.kie.server.controller</name>
-        <value>http://localhost:8080/business-central/rest/controller</value>
+        <value></value>
         <type>java.lang.String</type>
       </config-item>
       <config-item>
@@ -35,11 +20,6 @@
       <config-item>
         <name>org.kie.server.location</name>
         <value>http://localhost:8090/rest/server</value>
-        <type>java.lang.String</type>
-      </config-item>
-      <config-item>
-        <name>org.kie.server.startup.strategy</name>
-        <value>LocalContainersStartupStrategy</value>
         <type>java.lang.String</type>
       </config-item>
     </configItems>
