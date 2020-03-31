@@ -11,7 +11,7 @@ This is an image showing the BPMN process:
 
 ### Prerequisites
 
-### Deploy the kie-srever
+### Overview
 
 The bank-loan-service is a spring boot application running the PAM capabilities.
 
@@ -57,6 +57,24 @@ A custom Dockerfile has been provided based on openjdk18-openshift image (latest
 
 A custom maven repository is created inside the image containing the bank-loan-kjar.
 When the kie server starts up, it needs that kjar exists in the local maven repository (it will not be loaded from nexus).
+
+### Deploy the kie server
+
+```bash
+   mvn -s ${NEXUS_MAVEN_SETTINGS} fabric8:build -Dfabric8.namespace=${build_environment}
+```
+
+Generate & Apply DeploymentConfig:
+
+```bash
+mvn -s ${NEXUS_MAVEN_SETTINGS} fabric8:resource fabric8:resource-apply -Dfabric8.openshift.enableAutomaticTrigger=false -Dfabric8.openshift.imageChangeTrigger=false -Dfabric8.namespace=${deploy_environment} -Dfabric8.generator.name=docker-registry.default.svc:5000/${build_environment}/${service_name}:1.0.0
+```
+
+Deploy to OpenShift:
+
+```bash
+oc rollout latest dc/${deploy_config} -n ${deploy_environment}
+```
 
 
 ## Local Environment installation
