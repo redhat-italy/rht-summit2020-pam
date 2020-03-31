@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-  new-hire-service.xml: |-
+  bank-loan-service.xml: |-
     <kie-server-state>
       <controllers>
         <string>http://pam-rhpamcentr:8080/rest/controller</string>
@@ -34,22 +34,22 @@ data:
           </config-item>
           <config-item>
             <name>org.kie.server.id</name>
-            <value>new-hire-service</value>
+            <value>bank-loan-service</value>
             <type>java.lang.String</type>
           </config-item>
           <config-item>
             <name>org.kie.server.location</name>
-            <value>http://new-hire-service:8090/rest/server</value>
+            <value>http://bank-loan-service:8090/rest/server</value>
             <type>java.lang.String</type>
           </config-item>
         </configItems>
       </configuration>
       <containers>
           <container>
-            <containerId>com.redhat:new-hire:1.0.0</containerId>
+            <containerId>com.redhat:bank-loan:1.0.0</containerId>
             <releaseId>
               <groupId>com.redhat</groupId>
-              <artifactId>new-hire</artifactId>
+              <artifactId>bank-loan</artifactId>
               <version>1.0.0</version>
             </releaseId>
             <status>STARTED</status>
@@ -85,4 +85,4 @@ data:
     </kie-server-state>
 kind: ConfigMap
 metadata:
-  name: new-hire-service-kie-server-state
+  name: bank-loan-service-kie-server-state

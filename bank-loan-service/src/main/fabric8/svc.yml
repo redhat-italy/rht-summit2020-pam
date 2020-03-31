@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: new-hire-service
+  name: bank-loan-service
   labels:
 spec:
   ports:

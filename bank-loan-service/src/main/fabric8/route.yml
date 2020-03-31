@@ -3,4 +3,4 @@ spec:
     targetPort: 8090
   to:
     kind: Service
-    name: new-hire-service
+    name: bank-loan-service
