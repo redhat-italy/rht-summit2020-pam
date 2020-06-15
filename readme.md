@@ -5,7 +5,7 @@ Example of a bank-loan BPM service with spring boot.<br>
 The project is composed by a kjar, representing a sample bank-loan BPMN process and by a kie-server running on spring boot.<br>
 
 This is an image showing the BPMN process:
-![ScreenShot 1](images/bankloan.bpmn.png)
+![ScreenShot 1](images/bankloan.bpmn.svg)
 
 ## OpenShift Environment installation
 
